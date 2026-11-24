@@ -1,0 +1,91 @@
+# Review template only: replace every REPLACE_* value before use.
+# deploy/deploy.sh is the preferred source-deployment path.
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: REPLACE_SERVICE
+  labels:
+    app-owner: REPLACE_OWNER
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "3"
+        run.googleapis.com/execution-environment: gen2
+        run.googleapis.com/cloudsql-instances: REPLACE_PROJECT:REPLACE_REGION:REPLACE_SQL_INSTANCE
+    spec:
+      serviceAccountName: REPLACE_RUNTIME_SA@REPLACE_PROJECT.iam.gserviceaccount.com
+      containerConcurrency: 20
+      timeoutSeconds: 120
+      containers:
+        - image: REPLACE_REGION-docker.pkg.dev/REPLACE_PROJECT/cloud-run-source-deploy/REPLACE_SERVICE:REPLACE_IMMUTABLE_TAG
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: APP_MODE
+              value: production
+            - name: APP_URL
+              value: https://REPLACE_APP_HOST
+            - name: SHOPIFY_API_KEY
+              value: REPLACE_SHOPIFY_CLIENT_ID
+            - name: SHOPIFY_SHOPS_ALLOWLIST
+              value: REPLACE_STORE.myshopify.com
+            - name: STORES_JSON
+              value: '[{"id":"uk","name":"Company UK","domain":"REPLACE_STORE.myshopify.com","country":"GB","currency":"GBP"}]'
+            - name: DB_AUTO_MIGRATE
+              value: "true"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: REPLACE_DATABASE_URL_SECRET
+                  key: "1"
+            - name: AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: REPLACE_AUTH_SECRET
+                  key: "1"
+            - name: ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: REPLACE_ENCRYPTION_KEY_SECRET
+                  key: "1"
+            - name: SHOPIFY_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: REPLACE_SHOPIFY_API_SECRET
+                  key: "1"
+            - name: INTERNAL_TASK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: REPLACE_INTERNAL_TASK_SECRET
+                  key: "1"
+          startupProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 24
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            timeoutSeconds: 3
+            periodSeconds: 30
+            failureThreshold: 3
+  traffic:
+    - latestRevision: true
+      percent: 100
+# For multiple app identities, add SHOPIFY_SHOP_CREDENTIALS from a JSON secret
+# instead of the shared SHOPIFY_API_KEY + SHOPIFY_API_SECRET pair above.
+# Ingress alone does not grant public invocation. The deploy script configures
+# public HTTPS invocation for Shopify callbacks; application routes still auth.

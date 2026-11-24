@@ -1,0 +1,27 @@
+{
+  "name": "commerce-suite-bundle-discount",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "shopify app function build",
+    "schema": "shopify app function schema",
+    "typegen": "shopify app function typegen",
+    "preview": "shopify app function run",
+    "test": "node --test ../../test/function.test.js"
+  },
+  "codegen": {
+    "schema": "schema.graphql",
+    "documents": "src/*.graphql",
+    "generates": {
+      "./generated/api.ts": { "plugins": ["typescript", "typescript-operations"] }
+    },
+    "config": { "omitOperationSuffix": true }
+  },
+  "dependencies": {
+    "@shopify/shopify_function": "2.0.1"
+  },
+  "devDependencies": {
+    "@shopify/cli": "5.0.2"
+  }
+}

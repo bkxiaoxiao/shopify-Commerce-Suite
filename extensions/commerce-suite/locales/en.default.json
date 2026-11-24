@@ -1,0 +1,7 @@
+{
+  "commerce_suite": {
+    "common": { "error": "We could not complete this request. Please try again in a moment.", "choose_product": "Choose a product in this block, or add the block to a product page." },
+    "bundles": { "heading": "Frequently bought together", "loading": "Loading recommendations…", "empty": "No recommendations are available right now.", "add": "Add selected items", "added": "Selected items were added to your cart.", "main": "Current product", "variant": "Option", "total": "Selected items total:", "checkout": "Final prices and eligible offers are shown at checkout." },
+    "restock": { "heading": "Let me know when it is back", "email": "Email address", "permission": "Request a notification when this option is back in stock. The notification does not reserve stock.", "marketing": "Also send me news and offers. (Optional)", "submit": "Notify me when available", "privacy": "Privacy policy", "subscribed": "Your notification request is saved.", "available": "This option is available now.", "preview": "Preview only. Open the storefront to test signup." }
+  }
+}

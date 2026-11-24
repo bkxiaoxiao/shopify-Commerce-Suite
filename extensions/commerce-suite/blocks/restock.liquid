@@ -1,0 +1,52 @@
+{%- assign current_product = block.settings.product | default: product -%}
+{%- assign translated_heading = 'commerce_suite.restock.heading' | t -%}
+{%- if current_product != blank -%}
+  <commerce-suite-restock class="commerce-suite" {{ block.shopify_attributes }}
+    data-proxy-path="{{ block.settings.proxy_path | escape }}"
+    data-root-url="{{ routes.root_url | escape }}"
+    data-product-id="{{ current_product.id }}"
+    data-variant-id="{{ current_product.selected_or_first_available_variant.id }}"
+    data-country="{{ localization.country.iso_code | escape }}"
+    data-locale="{{ request.locale.iso_code | escape }}"
+    data-form-selector="{{ block.settings.product_form_selector | escape }}"
+    data-design-mode="{{ request.design_mode }}"
+    data-label-error="{{ 'commerce_suite.common.error' | t | escape }}"
+    data-label-subscribed="{{ 'commerce_suite.restock.subscribed' | t | escape }}"
+    data-label-available="{{ 'commerce_suite.restock.available' | t | escape }}"
+    data-label-preview="{{ 'commerce_suite.restock.preview' | t | escape }}">
+    <h2 class="commerce-suite__heading">{{ block.settings.heading | default: translated_heading | escape }}</h2>
+    <p data-commerce-variant class="commerce-suite__variant"></p>
+    <form data-commerce-subscribe class="commerce-suite__subscribe" method="post" action="/apps/commerce-suite/subscriptions">
+      <label for="commerce-email-{{ block.id }}">{{ 'commerce_suite.restock.email' | t }}</label>
+      <input id="commerce-email-{{ block.id }}" name="email" type="email" autocomplete="email" maxlength="254" required>
+      <p class="commerce-suite__note">{{ 'commerce_suite.restock.permission' | t }}</p>
+      {%- if block.settings.show_marketing_option -%}
+        <label class="commerce-suite__checkbox"><input type="checkbox" name="marketingConsent" value="true"> <span>{{ 'commerce_suite.restock.marketing' | t }}</span></label>
+      {%- endif -%}
+      <button type="submit" class="commerce-suite__button" disabled>{{ 'commerce_suite.restock.submit' | t }}</button>
+      {%- if shop.privacy_policy.url != blank -%}
+        <a class="commerce-suite__privacy" href="{{ shop.privacy_policy.url | escape }}">{{ 'commerce_suite.restock.privacy' | t }}</a>
+      {%- endif -%}
+    </form>
+    <p data-commerce-status class="commerce-suite__status" role="status" aria-live="polite"></p>
+    {% render 'product-data', current_product: current_product %}
+  </commerce-suite-restock>
+{%- elsif request.design_mode -%}
+  <p {{ block.shopify_attributes }}>{{ 'commerce_suite.common.choose_product' | t }}</p>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Back in stock signup",
+  "target": "section",
+  "javascript": "commerce-suite.js",
+  "stylesheet": "commerce-suite.css",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product (uses page product when empty)" },
+    { "type": "text", "id": "heading", "label": "Heading override" },
+    { "type": "checkbox", "id": "show_marketing_option", "label": "Offer a separate newsletter opt-in", "default": false },
+    { "type": "text", "id": "proxy_path", "label": "App proxy path", "default": "/apps/commerce-suite" },
+    { "type": "text", "id": "product_form_selector", "label": "Product form CSS selector (optional)", "info": "Use for themes with multiple forms for this same product." }
+  ]
+}
+{% endschema %}

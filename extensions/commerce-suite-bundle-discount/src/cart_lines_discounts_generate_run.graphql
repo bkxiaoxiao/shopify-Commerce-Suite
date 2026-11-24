@@ -1,0 +1,31 @@
+query CartLinesDiscountsGenerateRunInput {
+  cart {
+    lines {
+      id
+      quantity
+      cost {
+        amountPerQuantity {
+          amount
+          currencyCode
+        }
+      }
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+        }
+      }
+    }
+  }
+  localization {
+    country {
+      isoCode
+    }
+  }
+  discount {
+    discountClasses
+    metafield(namespace: "$app:commerce-suite", key: "bundle") {
+      jsonValue
+    }
+  }
+}

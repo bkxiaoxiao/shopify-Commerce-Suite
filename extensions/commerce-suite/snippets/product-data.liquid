@@ -1,0 +1,18 @@
+<script type="application/json" data-commerce-product>
+{
+  "id": {{ current_product.id | append: '' | json }},
+  "title": {{ current_product.title | json | replace: '<', '\u003c' | replace: '>', '\u003e' | replace: '&', '\u0026' }},
+  "handle": {{ current_product.handle | json }},
+  "image": {% if current_product.featured_image %}{{ current_product.featured_image | image_url: width: 160 | json }}{% else %}null{% endif %},
+  "variants": [
+    {%- for variant in current_product.variants -%}
+      {
+        "id": {{ variant.id | append: '' | json }},
+        "title": {{ variant.title | json | replace: '<', '\u003c' | replace: '>', '\u003e' | replace: '&', '\u0026' }},
+        "priceMinor": {{ variant.price | json }},
+        "available": {{ variant.available | json }}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>

@@ -1,0 +1,52 @@
+{%- assign current_product = block.settings.product | default: product -%}
+{%- assign translated_heading = 'commerce_suite.bundles.heading' | t -%}
+{%- if current_product != blank -%}
+  <commerce-suite-bundles class="commerce-suite" {{ block.shopify_attributes }}
+    data-proxy-path="{{ block.settings.proxy_path | escape }}"
+    data-root-url="{{ routes.root_url | escape }}"
+    data-product-id="{{ current_product.id }}"
+    data-variant-id="{{ current_product.selected_or_first_available_variant.id }}"
+    data-country="{{ localization.country.iso_code | escape }}"
+    data-currency="{{ cart.currency.iso_code | default: shop.currency | escape }}"
+    data-locale="{{ request.locale.iso_code | escape }}"
+    data-form-selector="{{ block.settings.product_form_selector | escape }}"
+    data-limit="{{ block.settings.max_products }}"
+    data-redirect="{{ block.settings.redirect_to_cart }}"
+    data-design-mode="{{ request.design_mode }}"
+    data-label-loading="{{ 'commerce_suite.bundles.loading' | t | escape }}"
+    data-label-empty="{{ 'commerce_suite.bundles.empty' | t | escape }}"
+    data-label-error="{{ 'commerce_suite.common.error' | t | escape }}"
+    data-label-add="{{ 'commerce_suite.bundles.add' | t | escape }}"
+    data-label-added="{{ 'commerce_suite.bundles.added' | t | escape }}"
+    data-label-main="{{ 'commerce_suite.bundles.main' | t | escape }}"
+    data-label-variant="{{ 'commerce_suite.bundles.variant' | t | escape }}">
+    <h2 class="commerce-suite__heading">{{ block.settings.heading | default: translated_heading | escape }}</h2>
+    <div data-commerce-list class="commerce-suite__list"></div>
+    <p data-commerce-status class="commerce-suite__status" role="status" aria-live="polite">{{ 'commerce_suite.bundles.loading' | t }}</p>
+    <div data-commerce-actions class="commerce-suite__actions" hidden>
+      <p>{{ 'commerce_suite.bundles.total' | t }} <strong data-commerce-total></strong></p>
+      <p class="commerce-suite__note">{{ 'commerce_suite.bundles.checkout' | t }}</p>
+      <button type="button" data-commerce-add class="commerce-suite__button">{{ 'commerce_suite.bundles.add' | t }}</button>
+    </div>
+    {% render 'product-data', current_product: current_product %}
+  </commerce-suite-bundles>
+{%- elsif request.design_mode -%}
+  <p {{ block.shopify_attributes }}>{{ 'commerce_suite.common.choose_product' | t }}</p>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product recommendations",
+  "target": "section",
+  "javascript": "commerce-suite.js",
+  "stylesheet": "commerce-suite.css",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product (uses page product when empty)" },
+    { "type": "text", "id": "heading", "label": "Heading override" },
+    { "type": "range", "id": "max_products", "label": "Maximum recommendations", "min": 1, "max": 6, "step": 1, "default": 3 },
+    { "type": "checkbox", "id": "redirect_to_cart", "label": "Open cart after adding selected items", "default": true },
+    { "type": "text", "id": "proxy_path", "label": "App proxy path", "default": "/apps/commerce-suite" },
+    { "type": "text", "id": "product_form_selector", "label": "Product form CSS selector (optional)", "info": "Use for themes with multiple forms for this same product." }
+  ]
+}
+{% endschema %}

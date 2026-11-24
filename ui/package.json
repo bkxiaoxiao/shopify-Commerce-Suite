@@ -1,0 +1,7 @@
+{
+  "name": "commerce-suite-ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "公司自用 Shopify 综合运营应用的离线交互原型"
+}

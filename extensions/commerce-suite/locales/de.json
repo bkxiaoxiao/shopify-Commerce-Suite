@@ -1,0 +1,7 @@
+{
+  "commerce_suite": {
+    "common": { "error": "Die Anfrage konnte nicht abgeschlossen werden. Bitte versuchen Sie es gleich erneut.", "choose_product": "Wählen Sie ein Produkt für diesen Block oder fügen Sie ihn einer Produktseite hinzu." },
+    "bundles": { "heading": "Wird oft zusammen gekauft", "loading": "Empfehlungen werden geladen…", "empty": "Zurzeit sind keine Empfehlungen verfügbar.", "add": "Ausgewählte Artikel hinzufügen", "added": "Die ausgewählten Artikel wurden zum Warenkorb hinzugefügt.", "main": "Aktuelles Produkt", "variant": "Variante", "total": "Summe der ausgewählten Artikel:", "checkout": "Endgültige Preise und gültige Angebote werden an der Kasse angezeigt." },
+    "restock": { "heading": "Bei Verfügbarkeit benachrichtigen", "email": "E-Mail-Adresse", "permission": "Fordern Sie eine Nachricht an, sobald diese Variante wieder verfügbar ist. Es wird kein Bestand reserviert.", "marketing": "Senden Sie mir auch Neuigkeiten und Angebote. (Optional)", "submit": "Bei Verfügbarkeit benachrichtigen", "privacy": "Datenschutzerklärung", "subscribed": "Ihre Benachrichtigungsanfrage wurde gespeichert.", "available": "Diese Variante ist jetzt verfügbar.", "preview": "Nur Vorschau. Öffnen Sie den Shop, um die Anmeldung zu testen." }
+  }
+}

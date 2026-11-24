@@ -1,0 +1,41 @@
+{
+  "apiVersion": "2026-10",
+  "handle": "commerce-suite-bundle-discount",
+  "target": "cart.lines.discounts.generate.run",
+  "export": "cart-lines-discounts-generate-run",
+  "compiled": true,
+  "deployed": false,
+  "buildContext": "Isolated synthetic app config; no real App association or deployment",
+  "toolchain": {
+    "shopifyCli": "5.0.2",
+    "shopifyFunctionSdk": "2.0.1"
+  },
+  "wasm": {
+    "bytes": 8795,
+    "sha256": "3d5db6ba6798955062737b1762fbea1b73991f9d624ea093b647d1d59e4bb557"
+  },
+  "schema": {
+    "apiVersion": "2026-10",
+    "source": "https://raw.githubusercontent.com/Shopify/discounts-reference-app/main/examples/javascript/default/extensions/discount-function/schema.graphql",
+    "sha256": "ea760c8e1c3967c2c35d81fd075891b230ef25846e2140f066353c1da2dd2da5",
+    "note": "Public Shopify reference snapshot for local compilation; refresh against the actual App before release."
+  },
+  "localWasmRuns": [
+    {
+      "fixture": "complete-bundle.json",
+      "result": "10 percent; target one unit per member despite extra main-product unit",
+      "instructions": 934642
+    },
+    {
+      "fixture": "incomplete-bundle.json",
+      "result": "operations is empty",
+      "instructions": 623319
+    },
+    {
+      "fixture": "fixed-one-cent.json",
+      "result": "one cent allocated once with appliesToEachItem=false",
+      "instructions": 975928
+    }
+  ],
+  "limits": "These fixture runs do not constitute worst-case cart performance or real-store acceptance."
+}

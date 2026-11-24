@@ -1,0 +1,19 @@
+api_version = "2026-10"
+
+[[extensions]]
+name = "Commerce Suite Bundle Discount"
+handle = "commerce-suite-bundle-discount"
+type = "function"
+description = "Discount complete configured bundles without rewarding incomplete selections."
+
+[[extensions.targeting]]
+target = "cart.lines.discounts.generate.run"
+input_query = "src/cart_lines_discounts_generate_run.graphql"
+export = "cart-lines-discounts-generate-run"
+
+[extensions.build]
+command = ""
+path = "dist/function.wasm"
+
+# Shopify CLI assigns the real extension uid when associated with a real App.
+# No network fetch target: the trusted discount metafield contains one bundle.

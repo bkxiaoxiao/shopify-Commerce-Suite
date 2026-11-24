@@ -1,0 +1,7 @@
+{
+  "commerce_suite": {
+    "common": { "error": "La demande n’a pas pu être traitée. Veuillez réessayer dans un instant.", "choose_product": "Choisissez un produit dans ce bloc ou ajoutez-le à une page produit." },
+    "bundles": { "heading": "Souvent achetés ensemble", "loading": "Chargement des recommandations…", "empty": "Aucune recommandation n’est disponible pour le moment.", "add": "Ajouter les articles sélectionnés", "added": "Les articles sélectionnés ont été ajoutés à votre panier.", "main": "Produit actuel", "variant": "Option", "total": "Total des articles sélectionnés :", "checkout": "Les prix définitifs et les offres applicables sont affichés lors du paiement." },
+    "restock": { "heading": "Prévenez-moi du retour en stock", "email": "Adresse e-mail", "permission": "Demandez une notification lorsque cette option sera de nouveau disponible. Aucun stock ne sera réservé.", "marketing": "Recevoir aussi les nouveautés et les offres. (Facultatif)", "submit": "Me prévenir du retour en stock", "privacy": "Politique de confidentialité", "subscribed": "Votre demande de notification a été enregistrée.", "available": "Cette option est disponible maintenant.", "preview": "Aperçu uniquement. Ouvrez la boutique pour tester l’inscription." }
+  }
+}

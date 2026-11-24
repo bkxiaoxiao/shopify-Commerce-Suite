@@ -1,0 +1,67 @@
+{
+  "cart": {
+    "lines": [
+      {
+        "id": "gid://shopify/CartLine/1",
+        "quantity": 2,
+        "cost": {
+          "amountPerQuantity": {
+            "amount": "100.00",
+            "currencyCode": "GBP"
+          }
+        },
+        "merchandise": {
+          "__typename": "ProductVariant",
+          "id": "gid://shopify/ProductVariant/1"
+        }
+      },
+      {
+        "id": "gid://shopify/CartLine/2",
+        "quantity": 1,
+        "cost": {
+          "amountPerQuantity": {
+            "amount": "25.00",
+            "currencyCode": "GBP"
+          }
+        },
+        "merchandise": {
+          "__typename": "ProductVariant",
+          "id": "gid://shopify/ProductVariant/2"
+        }
+      }
+    ]
+  },
+  "localization": {
+    "country": {
+      "isoCode": "GB"
+    }
+  },
+  "discount": {
+    "discountClasses": [
+      "PRODUCT"
+    ],
+    "metafield": {
+      "jsonValue": {
+        "id": "fixture-bundle",
+        "name": "Fixture bundle",
+        "enabled": true,
+        "discountType": "percentage",
+        "discountBps": 1000,
+        "currency": "GBP",
+        "markets": [
+          "GB"
+        ],
+        "members": [
+          {
+            "variantId": "gid://shopify/ProductVariant/1",
+            "quantity": 1
+          },
+          {
+            "variantId": "gid://shopify/ProductVariant/2",
+            "quantity": 1
+          }
+        ]
+      }
+    }
+  }
+}

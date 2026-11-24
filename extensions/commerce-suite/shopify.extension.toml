@@ -1,0 +1,5 @@
+name = "Commerce Suite"
+type = "theme"
+
+# Shopify CLI will assign the extension identity when connected to a real app.
+# Do not copy a uid from another app or deploy this template without review.

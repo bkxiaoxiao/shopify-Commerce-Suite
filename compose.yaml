@@ -1,0 +1,53 @@
+# Local Docker only. Production uses Cloud Run + Cloud SQL, not this database.
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "127.0.0.1:${LOCAL_PORT:-8080}:8080"
+    environment:
+      NODE_ENV: production
+      PORT: "8080"
+      APP_MODE: "${APP_MODE:-demo}"
+      APP_URL: "${APP_URL:-http://localhost:8080}"
+      DATABASE_URL: "postgresql://shopify:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in a local .env file}@db:5432/shopify_ops"
+      AUTH_SECRET: "${AUTH_SECRET:-}"
+      ENCRYPTION_KEY: "${ENCRYPTION_KEY:-}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:-}"
+      SHOPIFY_API_KEY: "${SHOPIFY_API_KEY:-}"
+      SHOPIFY_API_SECRET: "${SHOPIFY_API_SECRET:-}"
+      SHOPIFY_SHOPS_ALLOWLIST: "${SHOPIFY_SHOPS_ALLOWLIST:-}"
+      STORES_JSON: "${STORES_JSON:-}"
+      SHOPIFY_SHOP_CREDENTIALS: "${SHOPIFY_SHOP_CREDENTIALS:-}"
+      SHOPIFY_ADMIN_USER_IDS: "${SHOPIFY_ADMIN_USER_IDS:-}"
+      DB_AUTO_MIGRATE: "${DB_AUTO_MIGRATE:-true}"
+      INTERNAL_TASK_SECRET: "${INTERNAL_TASK_SECRET:-}"
+      GCS_BUCKET: "${GCS_BUCKET:-}"
+      MAIL_FROM: "${MAIL_FROM:-}"
+      RESEND_API_KEY: "${RESEND_API_KEY:-}"
+    depends_on:
+      db:
+        condition: service_healthy
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: shopify_ops
+      POSTGRES_USER: shopify
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in a local .env file}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+volumes:
+  postgres_data:

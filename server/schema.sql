@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS app_state(shop_id text NOT NULL, key text NOT NULL, value jsonb NOT NULL, revision integer NOT NULL DEFAULT 1, updated_at timestamptz NOT NULL DEFAULT now(), PRIMARY KEY(shop_id,key));
+CREATE TABLE IF NOT EXISTS installations(shop_id text PRIMARY KEY, token_cipher text, carrier_token text, active boolean NOT NULL DEFAULT true, updated_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE IF NOT EXISTS products(shop_id text NOT NULL,id text NOT NULL,data jsonb NOT NULL,updated_at timestamptz NOT NULL DEFAULT now(),PRIMARY KEY(shop_id,id));
+CREATE TABLE IF NOT EXISTS orders(shop_id text NOT NULL,id text NOT NULL,data jsonb NOT NULL,updated_at timestamptz NOT NULL DEFAULT now(),PRIMARY KEY(shop_id,id));
+CREATE TABLE IF NOT EXISTS document_sequences(shop_id text NOT NULL,series text NOT NULL,counter integer NOT NULL,PRIMARY KEY(shop_id,series));
+CREATE TABLE IF NOT EXISTS documents(shop_id text NOT NULL,id text NOT NULL,source_key text NOT NULL,snapshot jsonb NOT NULL,created_at timestamptz NOT NULL DEFAULT now(),PRIMARY KEY(shop_id,id),UNIQUE(shop_id,source_key));
+CREATE TABLE IF NOT EXISTS subscriptions(shop_id text NOT NULL,id text NOT NULL,email text NOT NULL,variant_id text NOT NULL,market text NOT NULL,data jsonb NOT NULL,active boolean NOT NULL DEFAULT true,created_at timestamptz NOT NULL DEFAULT now(),PRIMARY KEY(shop_id,id),UNIQUE(shop_id,email,variant_id,market));
+CREATE TABLE IF NOT EXISTS jobs(id text PRIMARY KEY,shop_id text NOT NULL,kind text NOT NULL,payload jsonb NOT NULL,status text NOT NULL DEFAULT 'pending',attempts integer NOT NULL DEFAULT 0,run_at timestamptz NOT NULL DEFAULT now(),lease_until timestamptz,lease_token text,last_error text,created_at timestamptz NOT NULL DEFAULT now(),finished_at timestamptz);
+CREATE INDEX IF NOT EXISTS jobs_claim_idx ON jobs(status,run_at);
+CREATE TABLE IF NOT EXISTS webhook_receipts(shop_id text NOT NULL,event_id text NOT NULL,topic text NOT NULL,created_at timestamptz NOT NULL DEFAULT now(),PRIMARY KEY(shop_id,event_id));
+CREATE TABLE IF NOT EXISTS oauth_nonces(hash text PRIMARY KEY,shop_id text NOT NULL,expires_at timestamptz NOT NULL);
+CREATE TABLE IF NOT EXISTS auth_attempts(key text PRIMARY KEY,attempts integer NOT NULL,expires_at timestamptz NOT NULL);
+CREATE TABLE IF NOT EXISTS audit_log(id bigserial PRIMARY KEY,shop_id text,action text NOT NULL,metadata jsonb NOT NULL DEFAULT '{}',created_at timestamptz NOT NULL DEFAULT now());
